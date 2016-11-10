@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<description>Spring(第一到五章)</description>
+	
+	<!-- demo:org1 -->
+	<bean id="action1" class="com.org1.UpperAction">
+		<property name="message" value="Hello"></property>
+	</bean>
+	
+	<bean id="action2" class="com.org1.LowerAction">
+		<property name="message" value="Hello"></property>
+	</bean>
+	
+	
+	<!-- demo:org2 -->
+	<bean id="helloWorld" class="com.org2.HelloWorld">
+		<property name="name" value="Spring"></property>
+	</bean>
+	
+	
+	<!-- demo:org3 通过构造方法来配置bean的属性 -->
+	<bean id="car" class="com.org3.Car">
+		<constructor-arg value="Audi" index="0"></constructor-arg>
+		<constructor-arg value="XiaMen"  type="java.lang.String" index="1"></constructor-arg>
+		<constructor-arg value="300000" type="double" index ="2"></constructor-arg>
+	</bean>
+	
+	<bean id="car2" class="com.org3.Car">
+		<constructor-arg value="Baoma"></constructor-arg>
+		<constructor-arg type="java.lang.String">
+			<value><![CDATA[<XiaMen>]]></value>
+		</constructor-arg>
+		<constructor-arg value="250" type="int"></constructor-arg>
+	</bean>
+	
+	<bean id="person" class="com.org3.Person">
+		<property name="name" value="Jonny"></property>
+		<property name="age" value="25"></property>
+		<!-- 引用bean：使用property的属性ref来建立bean之间的引用 -->
+		<!-- <property name="car" ref="car2"></property> -->
+		<!-- 内部bean,不能被外部bean引用  -->
+		<property name="car">
+			<bean id="car3" class="com.org3.Car">
+				<constructor-arg value="Ford" index="0"></constructor-arg>
+				<constructor-arg value="XiaMen"  type="java.lang.String" index="1"></constructor-arg>
+				<constructor-arg value="200000" type="double" index ="2"></constructor-arg>
+			</bean>
+		</property>
+		<property name="car.maxSpeed" value="260"></property>
+	</bean>
+	
+	<bean id="person2" class="com.org3.Person">
+		<constructor-arg value="Jerry"></constructor-arg>
+		<constructor-arg value="25"></constructor-arg>
+		<!-- <constructor-arg ref="car"></constructor-arg> -->
+		<!-- 测试赋值null -->
+		<!-- <constructor-arg><null/></constructor-arg> -->
+		<constructor-arg ref="car"></constructor-arg>
+		<!-- 为级联属性赋值 注意：属性需要先初始化后才可以为级联属性赋值，否则会有异常,和Struts2不同 -->
+		<property name="car.maxSpeed" value="250"></property>
+	</bean>
+	
+	
+	<!-- demo:org4 -->
+	<!-- 配置 集合 属性 -->
+	<bean id="person3" class="com.org4.Person">
+		<property name="name" value="Micky"></property>
+		<property name="age" value="24"></property>
+		<property name="cars">
+			<list>
+				<ref bean="car" />
+				<ref bean="car2" />
+				<bean class="com.org3.Car">
+					<constructor-arg value="Ford" index="0"></constructor-arg>
+					<constructor-arg value="XiaMen"  type="java.lang.String" index="1"></constructor-arg>
+					<constructor-arg value="200000" type="double" index ="2"></constructor-arg>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置  Map 属性 -->
+	<bean id="newPerson" class="com.org4.NewPerson">
+		<property name="name" value="Risser"></property>
+		<property name="age" value="28"></property>
+		<property name="cars">
+			<map>
+				<entry key="AA" value-ref="car"></entry>
+				<entry key="BB" value-ref="car2"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 配置 properties 属性值 -->
+	<bean id="dataSource" class="com.org4.DataSource">
+		<property name="properties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="password">1234</prop>
+				<prop key="jdbcUrl">jdbc:mysql:///test</prop>
+				<prop key="driverClass">com.mysql.jdbc.Driver</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 配置独立的集合 bean，以供多个 bean 进行引用 -->
+	<util:list id="cars">
+		<ref bean="car"/>
+		<ref bean="car2"/>
+	</util:list>
+	<bean id="person4" class="com.org4.Person">
+		<property name="name" value="Jack"></property>
+		<property name="age" value="23"></property>
+		<property name="cars" ref="cars"></property>
+	</bean>
+	
+	<!-- 通过p命名空间为bean 的属性赋值，需要先导入p 命名空间 -->
+	<bean id="person5" class="com.org4.Person" p:age="30" p:name="Queen" p:cars-ref="cars"></bean>
+	
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	
+	<!-- <bean id="address" class="com.org5.Address"
+		p:city="XiaMen" p:street="HuLiQu"></bean> -->
+	<!-- 抽象bean 不能被 IOC 容器实例化，只能被用来被继承配置 ；若bean 没有指定class属性则bean 必须是一个抽象bean-->
+	<bean id="address" 
+		p:city="XiaMen^" p:street="HuLiQu" abstract="true"></bean>
+	
+	<!-- bean 配置的继承， -->
+	<bean id="address2" class="com.org5.Address" 
+	 	p:city="XiaMen" p:street="JiMeiQu" parent="address"></bean>
+	 	
+	 <bean id="address3" class="com.org5.Address" 
+	 	p:street="TongAnQu" parent="address2"></bean>
+	 	
+	 <bean id="car" class="com.org5.Car"
+	 	p:brand="Audi" p:price="3000000"></bean>
+	 	
+	 <bean id="person" class="com.org5.Person"
+	 	p:name="Tom" p:address-ref="address2" depends-on="car"></bean>
+	 	
+</beans>

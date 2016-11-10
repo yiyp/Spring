@@ -10,7 +10,8 @@
 		<config>src/applicationContext.xml</config>
 		<config>src/beans-autowire.xml</config>
 		<config>src/beans-relation.xml</config>
-		<config>src/bean-scope.xml</config>
+		<config>src/beans-scope.xml</config>
+		<config>src/beans-properties.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
